@@ -39,6 +39,28 @@ describe('#get', () => {
 			});
 	});
 
+	it('should #get /fastft.rss', () => {
+		return main.get('https://www.ft.com/fastft.rss')
+			.then(data => {
+				expect(data).to.eql({
+					code: 100,
+					fromURL: 'https://www.ft.com/fastft.rss',
+					toURL: 'https://www.ft.com/stream/brandId/NTlhNzEyMzMtZjBjZi00Y2U1LTg0ODUtZWVjNmEyYmU1NzQ2-QnJhbmRz.rss'
+				});
+			});
+	});
+
+	it('should #get /fastft.json', () => {
+		return main.get('https://www.ft.com/fastft.json')
+			.then(data => {
+				expect(data).to.eql({
+					code: 100,
+					fromURL: 'https://www.ft.com/fastft.json',
+					toURL: 'https://www.ft.com/stream/brandId/NTlhNzEyMzMtZjBjZi00Y2U1LTg0ODUtZWVjNmEyYmU1NzQ2-QnJhbmRz.json'
+				});
+			});
+	});
+
 	it('should return a vanity-like response if the database doesn\'t contain a url', () => {
 		return main.get('https://www.ft.com/unknown')
 			.then(data => {
@@ -46,6 +68,28 @@ describe('#get', () => {
 					code: 100,
 					fromURL: 'https://www.ft.com/unknown',
 					toURL: 'https://www.ft.com/unknown'
+				});
+			});
+	});
+
+	it('should return a vanity-like response for rss if the database doesn\'t contain a url', () => {
+		return main.get('https://www.ft.com/unknown.rss')
+			.then(data => {
+				expect(data).to.eql({
+					code: 100,
+					fromURL: 'https://www.ft.com/unknown.rss',
+					toURL: 'https://www.ft.com/unknown.rss'
+				});
+			});
+	});
+
+	it('should return a vanity-like response for json if the database doesn\'t contain a url', () => {
+		return main.get('https://www.ft.com/unknown.json')
+			.then(data => {
+				expect(data).to.eql({
+					code: 100,
+					fromURL: 'https://www.ft.com/unknown.json',
+					toURL: 'https://www.ft.com/unknown.json'
 				});
 			});
 	});

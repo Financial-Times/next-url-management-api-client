@@ -5,7 +5,7 @@ const get = require('./lib/get');
 const dynamos = require('./lib/dynamos');
 const health = require('./lib/health');
 const cache = require('./lib/cache');
-
+const extensionRX = /\.(?:json|rss)$/;
 let metrics;
 let useCache = false;
 let timeout;
@@ -13,14 +13,21 @@ let timeout;
 exports.health = health.check;
 
 exports.get = fromURL => {
+
 	if(useCache){
 		let cacheItem = cache.retrieve(fromURL);
 		if(cacheItem){
 			return Promise.resolve(cacheItem);
 		}
 	}
+	const extension = (extensionRX.exec(fromURL) || [''])[0];
 
+
+	if (extension) {
+		fromURL = fromURL.replace(extensionRX, '');
+	}
 	const dynamo = dynamos[active()];
+
 	return get({
 		dynamo: dynamo.instance,
 		table: dynamo.table,
@@ -39,6 +46,11 @@ exports.get = fromURL => {
 		}
 		return Promise.reject(err);
 	}).then(result => {
+		result = {
+			fromURL: result.fromURL + extension,
+			toURL: result.toURL + extension,
+			code: result.code
+		};
 		useCache && cache.store(fromURL, result);
 		return result;
 	});

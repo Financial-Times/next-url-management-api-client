@@ -2,9 +2,9 @@ include n.Makefile
 
 .PHONY: test coverage
 
-test: verify unit-test
+test: test-unit verify
 
-unit-test:
+test-unit:
 	$(NPM_BIN_ENV); mocha
 
 coverage:
