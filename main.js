@@ -21,10 +21,11 @@ exports.get = fromURL => {
 		}
 	}
 	const extension = (extensionRX.exec(fromURL) || [''])[0];
+
+
 	if (extension) {
 		fromURL = fromURL.replace(extensionRX, '');
 	}
-
 	const dynamo = dynamos[active()];
 
 	return get({
@@ -38,8 +39,8 @@ exports.get = fromURL => {
 			// NB. This will still get cached by the next then because
 			// now this promise is not rejected anymore.
 			return {
-				fromURL: fromURL + extension,
-				toURL: fromURL + extension,
+				fromURL,
+				toURL: fromURL,
 				code: 100
 			};
 		}

@@ -72,6 +72,28 @@ describe('#get', () => {
 			});
 	});
 
+	it('should return a vanity-like response for rss if the database doesn\'t contain a url', () => {
+		return main.get('https://www.ft.com/unknown.rss')
+			.then(data => {
+				expect(data).to.eql({
+					code: 100,
+					fromURL: 'https://www.ft.com/unknown.rss',
+					toURL: 'https://www.ft.com/unknown.rss'
+				});
+			});
+	});
+
+	it('should return a vanity-like response for json if the database doesn\'t contain a url', () => {
+		return main.get('https://www.ft.com/unknown.json')
+			.then(data => {
+				expect(data).to.eql({
+					code: 100,
+					fromURL: 'https://www.ft.com/unknown.json',
+					toURL: 'https://www.ft.com/unknown.json'
+				});
+			});
+	});
+
 	it('should reject if the vanity service takes too long', () => {
 		return main.get('https://www.ft.com/slowft')
 			.then(() => {
