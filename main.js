@@ -37,6 +37,9 @@ exports.batchGet = fromURLs => {
 
 	return Promise.resolve()
 		.then(() => {
+			if (fromURLs.length === 0) {
+				return [];
+			}
 
 			// Normall ‘get’ synthesises redirects from, say, https//www.ft.com/blah/ to https://www.ft.com/blah.
 			// It's a bit fiddly to do this in batch mode and not yet needed so haven't opted to not support this
