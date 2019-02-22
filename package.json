@@ -8,7 +8,7 @@
     "denodeify": "^1.2.1"
   },
   "devDependencies": {
-    "@financial-times/n-gage": "^1.8.9",
+    "@financial-times/n-gage": "^3.0.0",
     "chai": "^3.5.0",
     "eslint": "^1.10.3",
     "istanbul": "^0.4.2",
