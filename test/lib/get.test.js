@@ -18,7 +18,7 @@ describe('#get', () => {
 				fromURL: 'https://www.ft.com/unknown',
 				dynamo: mockInstance,
 				metrics: metricsMock,
-				table: 'urlmgmtapi_master',
+				table: 'urlmgmtapi_primary',
 				timeout: 500
 			})
 			.then(() => {
