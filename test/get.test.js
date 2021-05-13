@@ -28,8 +28,8 @@ const main = proxyquire('..', {
 		get: function (name) {
 			return this[name];
 		},
-		master: { table: 'urlmgmtapi_master', instance: mockInstance },
-		slave: { table: 'urlmgmtapi_slave', instance: mockInstance }
+		primary: { table: 'urlmgmtapi_primary', instance: mockInstance },
+		replica: { table: 'urlmgmtapi_replica', instance: mockInstance }
 	}
 });
 

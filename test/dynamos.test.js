@@ -10,7 +10,7 @@ describe('#dynamos', () => {
 	beforeEach(() => sinon.stub(dynamos, '_createDynamoDBInstance'));
 	afterEach(() => dynamos._createDynamoDBInstance.restore())
 
-	it('should initialise master and slave instances', () => {
+	it('should initialise primary and replica instances', () => {
 		dynamos.init();
 		expect(dynamos._createDynamoDBInstance.args[0][0]).to.deep.equal({
 			region: 'eu-west-1',
@@ -26,9 +26,9 @@ describe('#dynamos', () => {
 		})
 	})
 
-	it('should be possible to get master or slave', () => {
-		expect(dynamos.get('master').table).to.equal('urlmgmtapi_master')
-		expect(dynamos.get('slave').table).to.equal('urlmgmtapi_slave')
+	it('should be possible to get primary or replica', () => {
+		expect(dynamos.get('primary').table).to.equal('urlmgmtapi_primary')
+		expect(dynamos.get('replica').table).to.equal('urlmgmtapi_replica')
 	});
 
 	it('should pass http options', () => {

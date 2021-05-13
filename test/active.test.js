@@ -13,16 +13,16 @@ const active = proxyquire('../lib/active', {
 		get: function (name) {
 			return this[name];
 		},
-		master: {
-			table: 'urlmgmtapi_master',
+		primary: {
+			table: 'urlmgmtapi_primary',
 			instance: {
 				getItem: (opts, cb) => {
 					setTimeout(() => cb(null, itemFixture), 300);
 				}
 			}
 		},
-		slave: {
-			table: 'urlmgmtapi_slave',
+		replica: {
+			table: 'urlmgmtapi_replica',
 			instance: {
 				getItem: (opts, cb) => {
 					setTimeout(() => cb(null, itemFixture), 100);
@@ -40,13 +40,13 @@ describe('#active', () => {
 		expect(dynamosInitStub.calledWith(opts)).to.be.true;
 	});
 
-	it('should start off being ‘master’', () => {
-		expect(active()).to.eql('master');
+	it('should start off being ‘primary’', () => {
+		expect(active()).to.eql('primary');
 	});
 
 	it('should prefer the faster region after the healthcheck has run', done => {
 		setTimeout(() => {
-			expect(active()).to.eql('slave');
+			expect(active()).to.eql('replica');
 			expect(active.totalFailure()).to.be.false;
 			done();
 		}, 500);

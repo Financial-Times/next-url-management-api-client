@@ -11,16 +11,16 @@ const active = proxyquire('../lib/active', {
 		get: function (name) {
 			return this[name];
 		},
-		master: {
-			table: 'urlmgmtapi_master',
+		primary: {
+			table: 'urlmgmtapi_primary',
 			instance: {
 				getItem: (opts, cb) => {
-					setTimeout(() => cb(new Error('master failure')), 100);
+					setTimeout(() => cb(new Error('primary failure')), 100);
 				}
 			}
 		},
-		slave: {
-			table: 'urlmgmtapi_slave',
+		replica: {
+			table: 'urlmgmtapi_replica',
 			instance: {
 				getItem: (opts, cb) => {
 					setTimeout(() => cb(null, itemFixture), 300);
@@ -34,13 +34,13 @@ describe('#active in a single region failure mode', () => {
 
 	before(() => active.init({ metrics: metricsMock }));
 
-	it('should start off being ‘master’', () => {
-		expect(active()).to.eql('master');
+	it('should start off being ‘primary’', () => {
+		expect(active()).to.eql('primary');
 	});
 
 	it('should use the healthy region', done => {
 		setTimeout(() => {
-			expect(active()).to.eql('slave');
+			expect(active()).to.eql('replica');
 			expect(active.totalFailure()).to.be.false;
 			done();
 		}, 500);

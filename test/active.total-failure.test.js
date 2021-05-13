@@ -10,19 +10,19 @@ const active = proxyquire('../lib/active', {
 		get: function (name) {
 			return this[name];
 		},
-		master: {
-			table: 'urlmgmtapi_master',
+		primary: {
+			table: 'urlmgmtapi_primary',
 			instance: {
 				getItem: (opts, cb) => {
-					setTimeout(() => cb(new Error('master failure')), 150)
+					setTimeout(() => cb(new Error('primary failure')), 150)
 				}
 			}
 		},
-		slave: {
-			table: 'urlmgmtapi_slave',
+		replica: {
+			table: 'urlmgmtapi_replica',
 			instance: {
 				getItem: (opts, cb) => {
-					setTimeout(() => cb(new Error('slave failure')), 100)
+					setTimeout(() => cb(new Error('replica failure')), 100)
 				}
 			}
 		}
@@ -34,13 +34,13 @@ describe('#active in a total failure mode', () => {
 
 	before(() => active.init({ metrics: metricsMock }));
 
-	it('should start off being ‘master’', () => {
-		expect(active()).to.eql('master');
+	it('should start off being ‘primary’', () => {
+		expect(active()).to.eql('primary');
 	});
 
-	it('should just use master and hope for the best', done => {
+	it('should just use primary and hope for the best', done => {
 		setTimeout(() => {
-			expect(active()).to.eql('master');
+			expect(active()).to.eql('primary');
 			expect(active.totalFailure()).to.be.true;
 			done();
 		}, 200);
